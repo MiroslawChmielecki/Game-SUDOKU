@@ -12,9 +12,10 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      showModal: false,
       initialBoard: "",
       board: "",
-      showModal: false
+      newGame: false
     };
     this.startNewGame = this.startNewGame.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -28,14 +29,15 @@ class App extends React.Component {
       board,
       initialBoard: board,
       Information: "Good luck :) !!",
-      InformationStyles: style.info
+      InformationStyles: style.info,
+      newGame: true
     });
   }
 
   handleChange(value, index) {
     if (value > 0 && value <= 9) {
       let newBoard = this.state.board.split("").map((val, i) => {
-        if (i == index) {
+        if (i === index) {
           return Number(value);
         }
         return val;
@@ -43,7 +45,7 @@ class App extends React.Component {
       this.setState({ board: newBoard.join("") });
     } else if (value === "") {
       let newBoard = this.state.board.split("").map((val, i) => {
-        if (i == index) {
+        if (i === index) {
           return ".";
         }
         return val;
@@ -74,7 +76,7 @@ class App extends React.Component {
     const solvedBoard = sudoku.solve(this.state.board);
     if (solvedBoard && !this.state.board.includes(".")) {
       this.setState({
-        Information: "You have solved SUDOKU correctly :) !!"
+        Information: "You have SOLVED Sudoku correctly :) !!"
       });
     } else if (solvedBoard) {
       this.setState({
@@ -94,24 +96,43 @@ class App extends React.Component {
   }
 
   render() {
+    const {
+      showModal,
+      Information,
+      InformationStyles,
+      initialBoard,
+      board,
+      newGame
+    } = this.state;
+
     return (
       <div className={style.container}>
-        <h1>Sudoku</h1>
-        <Modal show={this.state.showModal} action={this.startNewGame} />
-        <Result
-          Information={this.state.Information}
-          className={this.state.InformationStyles}
-        />
+        <h1 className={newGame ? style.mainTitle : style.startTitle}>Sudoku</h1>
+        <p className={newGame ? style.none : style.subTitle}>Let's play !!</p>
+        <Modal show={showModal} action={this.startNewGame} />
+        <Result Information={Information} className={InformationStyles} />
         <Board
-          initialBoard={this.state.initialBoard}
-          board={this.state.board}
+          initialBoard={initialBoard}
+          board={board}
           handleChange={this.handleChange}
         />
         <div className={style.buttons}>
-          <button onClick={() => this.check()}>Check</button>
-          <button onClick={() => this.solveTheGame()}>Solve the Game</button>
-          <button onClick={() => this.reset()}>Restart</button>
-          <button onClick={() => this.toggleModal()}>New Game</button>
+          <button
+            className={newGame ? "" : style.startButton}
+            onClick={() => this.toggleModal()}
+          >
+            New Game
+          </button>
+
+          {newGame ? <button onClick={() => this.check()}>Check</button> : ""}
+
+          {newGame ? (
+            <button onClick={() => this.solveTheGame()}>Solve the Game</button>
+          ) : (
+            ""
+          )}
+
+          {newGame ? <button onClick={() => this.reset()}>Restart</button> : ""}
         </div>
       </div>
     );
