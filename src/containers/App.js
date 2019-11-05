@@ -16,6 +16,7 @@ class App extends React.Component {
       board: ""
     };
     this.startNewGame = this.startNewGame.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   startNewGame(level) {
@@ -25,6 +26,26 @@ class App extends React.Component {
       board,
       initialBoard: board
     });
+  }
+
+  handleChange(value, index) {
+    if (value > 0 && value <= 9) {
+      let newBoard = this.state.board.split("").map((val, i) => {
+        if (i == index) {
+          return Number(value);
+        }
+        return val;
+      });
+      this.setState({ board: newBoard.join("") });
+    } else if (value === "") {
+      let newBoard = this.state.board.split("").map((val, i) => {
+        if (i == index) {
+          return ".";
+        }
+        return val;
+      });
+      this.setState({ board: newBoard.join("") });
+    }
   }
 
   render() {
