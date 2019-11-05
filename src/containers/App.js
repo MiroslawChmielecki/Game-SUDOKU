@@ -13,7 +13,8 @@ class App extends React.Component {
 
     this.state = {
       initialBoard: "",
-      board: ""
+      board: "",
+      showModal: false
     };
     this.startNewGame = this.startNewGame.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -23,9 +24,10 @@ class App extends React.Component {
     const board = sudoku.generate(level);
 
     this.setState({
+      showModal: !this.state.showModal,
       board,
       initialBoard: board,
-      Information: "Powodzenia !!",
+      Information: "Good luck :) !!",
       InformationStyles: style.info
     });
   }
@@ -53,7 +55,7 @@ class App extends React.Component {
   reset() {
     this.setState({
       board: this.state.initialBoard,
-      Information: "Do dzieła !!"
+      Information: "Good luck !!"
     });
   }
 
@@ -63,7 +65,7 @@ class App extends React.Component {
       this.setState({ board: solve });
     } else {
       this.setState({
-        Information: "Zrobiłeś błąd"
+        Information: "You made mistake.."
       });
     }
   }
@@ -72,24 +74,30 @@ class App extends React.Component {
     const solvedBoard = sudoku.solve(this.state.board);
     if (solvedBoard && !this.state.board.includes(".")) {
       this.setState({
-        Information: "Rozwiązałeś poprawnie Sudoku :) !!"
+        Information: "You have solved SUDOKU correctly :) !!"
       });
     } else if (solvedBoard) {
       this.setState({
-        Information: "Dobrze Ci idzie :)"
+        Information: "You're doing fine :)"
       });
     } else {
       this.setState({
-        Information: "Gdzieś popełniłeś błąd.."
+        Information: "You made mistake somewhere.."
       });
     }
+  }
+
+  toggleModal() {
+    this.setState({
+      showModal: !this.state.showModal
+    });
   }
 
   render() {
     return (
       <div className={style.container}>
         <h1>Sudoku</h1>
-        <Modal />
+        <Modal show={this.state.showModal} action={this.startNewGame} />
         <Result
           Information={this.state.Information}
           className={this.state.InformationStyles}
@@ -103,7 +111,7 @@ class App extends React.Component {
           <button onClick={() => this.check()}>Check</button>
           <button onClick={() => this.solveTheGame()}>Solve the Game</button>
           <button onClick={() => this.reset()}>Restart</button>
-          <button onClick={() => this.startNewGame()}>New Game</button>
+          <button onClick={() => this.toggleModal()}>New Game</button>
         </div>
       </div>
     );
