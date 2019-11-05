@@ -6,7 +6,7 @@ const Modal = props => {
   } else {
     return (
       <div>
-        <h3>Wybierz poziom trudności gry:</h3>
+        <h2>Wybierz poziom trudności gry:</h2>
         <div>
           <button onClick={() => props.action("easy")}>Easy</button>
           <button onClick={() => props.action("medium")}>Medium</button>

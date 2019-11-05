@@ -36,6 +36,13 @@ input[type="number"] {
 
 .buttons button {
   margin: 60px 20px 0;
-  width: 100px;
-  height: 30px;
+  width: 120px;
+  height: 40px;
+  color: brown;
+  font-weight: bold;
+}
+
+.info {
+  font-size: 30px;
+  color: blue;
 }

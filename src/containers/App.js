@@ -24,7 +24,9 @@ class App extends React.Component {
 
     this.setState({
       board,
-      initialBoard: board
+      initialBoard: board,
+      Information: "Powodzenia !!",
+      InformationStyles: style.info
     });
   }
 
@@ -48,21 +50,59 @@ class App extends React.Component {
     }
   }
 
+  reset() {
+    this.setState({
+      board: this.state.initialBoard,
+      Information: "Do dzieła !!"
+    });
+  }
+
+  solveTheGame() {
+    const solve = sudoku.solve(this.state.board);
+    if (solve) {
+      this.setState({ board: solve });
+    } else {
+      this.setState({
+        Information: "Zrobiłeś błąd"
+      });
+    }
+  }
+
+  check() {
+    const solvedBoard = sudoku.solve(this.state.board);
+    if (solvedBoard && !this.state.board.includes(".")) {
+      this.setState({
+        Information: "Rozwiązałeś poprawnie Sudoku :) !!"
+      });
+    } else if (solvedBoard) {
+      this.setState({
+        Information: "Dobrze Ci idzie :)"
+      });
+    } else {
+      this.setState({
+        Information: "Gdzieś popełniłeś błąd.."
+      });
+    }
+  }
+
   render() {
     return (
       <div className={style.container}>
         <h1>Sudoku</h1>
         <Modal />
-        <Result />
+        <Result
+          Information={this.state.Information}
+          className={this.state.InformationStyles}
+        />
         <Board
           initialBoard={this.state.initialBoard}
           board={this.state.board}
           handleChange={this.handleChange}
         />
         <div className={style.buttons}>
-          <button>Check</button>
-          <button>Solve</button>
-          <button>Restart</button>
+          <button onClick={() => this.check()}>Check</button>
+          <button onClick={() => this.solveTheGame()}>Solve the Game</button>
+          <button onClick={() => this.reset()}>Restart</button>
           <button onClick={() => this.startNewGame()}>New Game</button>
         </div>
       </div>
