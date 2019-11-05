@@ -5,6 +5,8 @@ import Board from "../components/Board";
 import sudoku from "sudoku-umd";
 import { hot } from "react-hot-loader";
 
+import style from "./App.css";
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className={style.container}>
         <h1>Sudoku</h1>
         <Modal />
         <Result />
@@ -36,7 +38,7 @@ class App extends React.Component {
           board={this.state.board}
           handleChange={this.handleChange}
         />
-        <div className="buttons">
+        <div className={style.buttons}>
           <button>Check</button>
           <button>Solve</button>
           <button>Restart</button>
